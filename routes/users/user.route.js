@@ -46,6 +46,20 @@ router.get("/", async (req, res) => {
   res.json(users);
 });
 
+// @route  Remove /user/:email
+// @desc   Remove user
+// @access Public
+router.delete("/:email", async (req, res) => {
+  const user = await UserModel.findOne({ email: req.params.email });
+
+  if (!user) {
+    return res.status(404).json({ error: "User not found" });
+  }
+
+  await user.remove();
+  return res.json({ success: "User removed" });
+});
+
 // @route  POST users/register
 // @desc   Register user
 // @access Public
@@ -78,21 +92,21 @@ router.post("/register", async (req, res) => {
     if (newUser.isAllow) {
       return res.json({ success: "You registered successful!" });
     } else {
-      return res.json({
-        success: "Please check your mailbox. Verify your email.",
-      });
+      // return res.json({
+      //   success: "Please check your mailbox. Verify your email.",
+      // });
 
-      // const emailsent = await sendEmailVerify(newUser.email, uniqueString);
-      // if (emailsent) {
-      //   return res.json({
-      //     success: "Please check your mailbox. Verify your email.",
-      //   });
-      // } else {
-      //   return res.status(500).send("Email Send Error!");
-      // }
+      const emailsent = await sendEmailVerify(newUser.email, uniqueString);
+      if (emailsent) {
+        return res.json({
+          success: "Please check your mailbox. Verify your email.",
+        });
+      } else {
+        return res.status(500).send("Email Send Error!");
+      }
     }
   } catch (err) {
-    return res.status(500).send("Server error1!");
+    return res.status(500).json({ error: "Server error1!" });
   }
 });
 
@@ -129,7 +143,7 @@ router.post("/login", async (req, res) => {
       res.json({ token: "Bearer " + token });
     });
   } catch (err) {
-    return res.status(500).send("Server error");
+    return res.status(500).json({ error: "Server error" });
   }
 });
 
@@ -152,7 +166,7 @@ router.post("/resend", async (req, res) => {
       success: "Please check your mailbox. Verify your email.",
     });
   } else {
-    return res.status(500).send("Email Send Error!");
+    return res.status(500).json({ error: "Email Send Error!" });
   }
 });
 

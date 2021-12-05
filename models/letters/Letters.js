@@ -26,10 +26,10 @@ const LetterSchema = new mongoose.Schema({
   },
   likes: [
     {
-      email: String,
+      email: { type: String },
     },
   ],
-  unlikes: [{ email: String }],
+  unlikes: [{ email: { type: String } }],
 });
 
 module.exports = mongoose.model("letter", LetterSchema);
