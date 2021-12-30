@@ -6,6 +6,7 @@ const bodyParser = require("body-parser");
 // Import Router
 const userRouter = require("./routes/users/user.route");
 const letterRouter = require("./routes/letters/letters.route");
+const emailRouter = require("./routes/email/email.route");
 
 const connectDB = require("./config/db");
 const app = express();
@@ -23,6 +24,7 @@ app.use(
 
 app.use("/user", userRouter);
 app.use("/letter", letterRouter);
+// app.use("/email", emailRouter);
 
 const PORT = process.env.PORT || 5000;
 

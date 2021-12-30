@@ -75,27 +75,23 @@ router.post("/register", async (req, res) => {
     const uniqueString = crypto.randomBytes(32).toString("hex");
 
     const newUser = new UserModel({
-      fName: reqData.fName,
-      lName: reqData.lName,
+      // fName: reqData.fName,
+      // lName: reqData.lName,
       email: reqData.email,
-      password: reqData.pass1,
+      password: reqData.password,
       isAllow: reqData.isAllow,
       token: uniqueString,
     });
 
     const salt = await bcrypt.genSalt(10);
 
-    newUser.password = await bcrypt.hash(reqData.pass1, salt);
+    newUser.password = await bcrypt.hash(reqData.password, salt);
 
     await newUser.save();
 
     if (newUser.isAllow) {
       return res.json({ success: "You registered successful!" });
     } else {
-      // return res.json({
-      //   success: "Please check your mailbox. Verify your email.",
-      // });
-
       const emailsent = await sendEmailVerify(newUser.email, uniqueString);
       if (emailsent) {
         return res.json({
@@ -118,25 +114,27 @@ router.post("/login", async (req, res) => {
   try {
     const user = await UserModel.findOne({ email: reqData.email });
     if (!user) {
-      return res.status(400).json({ error: "User not found." });
+      return res.status(400).json({ error: "Not registered" });
     }
 
-    const isMatch = await bcrypt.compare(reqData.password, user.password);
+    if (reqData.password) {
+      const isMatch = await bcrypt.compare(reqData.password, user.password);
 
-    if (!isMatch) {
-      return res.status(400).json({ error: "Password incorrect." });
+      if (!isMatch) {
+        return res.status(400).json({ error: "Password incorrect." });
+      }
     }
 
     const payload = {
       user: {
         email: user.email,
-        fName: user.fName,
-        lName: user.lName,
+        // fName: user.fName,
+        // lName: user.lName,
         isAllow: user.isAllow,
       },
     };
 
-    jwt.sign(payload, "123456789", { expiresIn: 360000 }, (err, token) => {
+    jwt.sign(payload, "123456789", { expiresIn: 3600 }, (err, token) => {
       if (err) {
         throw err;
       }
@@ -150,8 +148,8 @@ router.post("/login", async (req, res) => {
 // @route  POST users/resend
 // @desc   Resend verify
 // @access Public
-router.post("/resend", async (req, res) => {
-  const { email } = req.body;
+router.post("/resend/:email", async (req, res) => {
+  const { email } = req.params;
   const uniqueString = crypto.randomBytes(32).toString("hex");
 
   const user = await UserModel.findOneAndUpdate(
@@ -159,13 +157,16 @@ router.post("/resend", async (req, res) => {
     { new: true },
     { token: uniqueString }
   );
-
-  const emailsent = await sendEmailVerify(user.email, user.token);
-  if (emailsent) {
-    return res.json({
-      success: "Please check your mailbox. Verify your email.",
-    });
-  } else {
+  try {
+    const emailsent = await sendEmailVerify(user.email, user.token);
+    if (emailsent) {
+      return res.json({
+        success: "Please check your mailbox. Verify your email.",
+      });
+    } else {
+      return res.status(500).json({ error: "Email Send Error!" });
+    }
+  } catch (error) {
     return res.status(500).json({ error: "Email Send Error!" });
   }
 });
@@ -176,17 +177,21 @@ router.post("/resend", async (req, res) => {
 router.post("/verify/:token", async (req, res) => {
   const token = req.params.token;
 
-  const user = await UserModel.findOne({ token });
-  if (!user) {
-    return res
-      .status(400)
-      .json({ error: "Please resend verification request." });
+  try {
+    const user = await UserModel.findOne({ token });
+    if (!user) {
+      return res
+        .status(400)
+        .json({ error: "Please resend verification request." });
+    }
+
+    user.isAllow = true;
+    await user.save();
+
+    return res.json({ success: "Your email is verified." });
+  } catch (error) {
+    return res.status(500).json({ error: "Server error" });
   }
-
-  user.isAllow = true;
-  await user.save();
-
-  return res.json({ success: "Your email is verified." });
 });
 
 module.exports = router;
