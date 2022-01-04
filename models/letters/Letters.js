@@ -1,17 +1,23 @@
 const mongoose = require("mongoose");
 const LetterSchema = new mongoose.Schema({
-  name: {
+  // name: {
+  //   type: String,
+  //   required: true,
+  // },
+
+  to: {
     type: String,
     required: true,
   },
-  email: {
+
+  from: {
     type: String,
     required: true,
   },
-  title: {
-    type: String,
-    required: true,
-  },
+  // title: {
+  //   type: String,
+  //   required: true,
+  // },
   plainText: {
     type: String,
     required: true,
@@ -24,12 +30,21 @@ const LetterSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
+  date: {
+    type: Date,
+  },
   likes: [
     {
       email: { type: String },
     },
   ],
   unlikes: [{ email: { type: String } }],
+  comments: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "comment",
+    },
+  ],
 });
 
 module.exports = mongoose.model("letter", LetterSchema);

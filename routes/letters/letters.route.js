@@ -7,8 +7,24 @@ const LetterModel = require("../../models/letters/Letters");
 // @desc   Get all letters
 // @access Public
 router.get("/", async (req, res) => {
-  const letters = await LetterModel.find().sort({ date: -1 });
-  res.json(letters);
+  try {
+    const letters = await LetterModel.find({ stateFlag: 0 }).sort({ date: -1 });
+    res.json(letters);
+  } catch (err) {
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+// @route  GET /letter/:id
+// @desc   Get one letter
+// @access Public
+router.get("/:id", async (req, res) => {
+  try {
+    const letters = await LetterModel.findById(req.params.id);
+    res.json(letters);
+  } catch (err) {
+    res.status(500).json({ error: "Server error" });
+  }
 });
 
 // @route  POST /letter/new
@@ -18,18 +34,19 @@ router.post("/new", async (req, res) => {
   const reqData = req.body;
   try {
     const newLetter = new LetterModel({
-      name: reqData.name,
-      email: reqData.email,
-      title: reqData.title,
-      plainText: reqData.plainText,
+      to: reqData.to,
+      from: reqData.from,
+      // title: reqData.title,
+      plainText: reqData.plainText.replace(/\n/g, ""),
       htmlText: reqData.htmlText.replace(/\n/g, ""),
       stateFlag: reqData.stateFlag,
+      date: reqData.date,
     });
 
     const letter = await newLetter.save();
+
     res.json(letter);
   } catch (err) {
-    console.log(err);
     res.status(500).json({ error: "Server error" });
   }
 });
