@@ -27,6 +27,20 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+// @route  GET /letter/:email
+// @desc   Get My letters
+// @access Public
+router.get("/email/:email", async (req, res) => {
+  try {
+    const letters = await LetterModel.find({ from: req.params.email }).sort({
+      date: -1,
+    });
+    res.json(letters);
+  } catch (err) {
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
 // @route  POST /letter/new
 // @desc   new letter
 // @access Private
@@ -147,7 +161,9 @@ router.delete("/:id", async (req, res) => {
     await letter.remove();
 
     res.json({ success: "Letter removed" });
-  } catch (error) {}
+  } catch (error) {
+    return res.status(500).json({ error: "Server Error." });
+  }
 });
 
 module.exports = router;
