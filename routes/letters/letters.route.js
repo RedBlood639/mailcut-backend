@@ -21,8 +21,12 @@ router.get("/", async (req, res) => {
 router.get("/:id", async (req, res) => {
   try {
     const letters = await LetterModel.findById(req.params.id);
+    // .populate(
+    //   "comments"
+    // );
     res.json(letters);
   } catch (err) {
+    console.log(err);
     res.status(500).json({ error: "Server error" });
   }
 });
