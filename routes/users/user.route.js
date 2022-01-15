@@ -25,7 +25,7 @@ const sendEmailVerify = async (email, uniqueString) => {
     from: sender,
     to: email,
     subject: "Verify your email",
-    html: `Press <a href=http://localhost:3000/verify/${uniqueString}> here </a> to verify your email. Thank you.`,
+    html: `Press <a href=http://madreply.com/verify/${uniqueString}> here </a> to verify your email. Thank you.`,
   };
 
   const temp = await Transport.sendMail(mailOptions)
@@ -33,6 +33,7 @@ const sendEmailVerify = async (email, uniqueString) => {
       return true;
     })
     .catch((e) => {
+      console.log(e);
       return false;
     });
   return temp;
@@ -102,6 +103,7 @@ router.post("/register", async (req, res) => {
       }
     }
   } catch (err) {
+    console.log(error);
     return res.status(500).json({ error: "Server error1!" });
   }
 });
@@ -167,6 +169,7 @@ router.post("/resend/:email", async (req, res) => {
       return res.status(500).json({ error: "Email Send Error!" });
     }
   } catch (error) {
+    console.log(error);
     return res.status(500).json({ error: "Email Send Error!" });
   }
 });
