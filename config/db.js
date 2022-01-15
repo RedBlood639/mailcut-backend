@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 // const config = require('config');
 // const db = config.get('mongoURI');
-const mongoURL = "mongodb://localhost:27017/madreply";
+const mongoURL = "mongodb://api.madreply.com:27017/madreply";
 const connectDB = async () => {
   try {
     await mongoose.connect(mongoURL, {
