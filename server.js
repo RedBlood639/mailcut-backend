@@ -1,12 +1,13 @@
 // Import modules
 const express = require("express");
-const cors = require("cors");
 const bodyParser = require("body-parser");
+const cors = require("cors");
 
 // Import Router
 const userRouter = require("./routes/users/user.route");
 const letterRouter = require("./routes/letters/letters.route");
-const emailRouter = require("./routes/email/email.route");
+const authRouter = require("./routes/email/auth-routes");
+const emailRouter = require("./routes/email/api-router");
 
 const connectDB = require("./config/db");
 const app = express();
@@ -24,7 +25,9 @@ app.use(
 
 app.use("/user", userRouter);
 app.use("/letter", letterRouter);
-// app.use("/email", emailRouter);
+
+app.use("/auth", authRouter);
+app.use("/email", emailRouter);
 
 const PORT = process.env.PORT || 5000;
 

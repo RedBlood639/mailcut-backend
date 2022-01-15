@@ -78,10 +78,13 @@ router.post("/edit/:id", async (req, res) => {
     const letter = await LetterModel.findByIdAndUpdate(
       req.params.id,
       {
-        title: reqData.title,
+        to: reqData.to,
+        from: reqData.from,
+        // title: reqData.title,
         plainText: reqData.plainText,
         htmlText: reqData.htmlText.replace(/\n/g, ""),
         stateFlag: reqData.stateFlag,
+        date: reqData.date,
       },
       { new: true }
     );
@@ -93,27 +96,31 @@ router.post("/edit/:id", async (req, res) => {
   }
 });
 
-// @route  POST /letter/like/:type/:email/:id
+// @route  POST /letter/like/:email/:id
 // @desc   Like Letter
 // @access Private
-router.post("/like/:type/:email/:id", async (req, res) => {
+router.post("/like/:email/:id", async (req, res) => {
   try {
     const letter = await LetterModel.findById(req.params.id);
 
     if (
-      letter.likes.filter((like) => like.email === req.params.email).length > 0
+      letter.unlikes.filter((like) => like.email === req.params.email).length >
+      0
     ) {
-      return res.status(400).json({ error: "You already liked" });
-    } else if (
-      letter.unlikes.filter((unlike) => unlike.email === req.params.email)
-    ) {
-      return res.status(400).json({ error: "You already unliked" });
+      return res.status(400).json({
+        error: "You can't opposite because you already recommend this letter.",
+      });
     }
 
-    if (req.params.type === "like") {
-      letter.likes.push({ email: req.params.email });
+    if (
+      letter.likes.filter((like) => like.email === req.params.email).length > 0
+    ) {
+      const removeIndex = letter.likes
+        .map((like) => like.email)
+        .indexOf(req.params.email);
+      letter.likes.splice(removeIndex, 1);
     } else {
-      letter.unlikes.push({ email: req.params.email });
+      letter.likes.push({ email: req.params.email });
     }
 
     await letter.save();
@@ -127,20 +134,28 @@ router.post("/like/:type/:email/:id", async (req, res) => {
 // @route  POST /letter/unlike/:type/:email/:id
 // @desc   unLike Letter
 // @access Private
-router.post("/unlike/:type/:email/:id", async (req, res) => {
+router.post("/unlike/:email/:id", async (req, res) => {
   try {
     const letter = await LetterModel.findById(req.params.id);
 
-    if (req.params.type === "like") {
-      const removeIndex = letter.likes
+    if (
+      letter.likes.filter((like) => like.email === req.params.email).length > 0
+    ) {
+      return res.status(400).json({
+        error: "You can't opposite because you already recommend this letter.",
+      });
+    }
+
+    if (
+      letter.unlikes.filter((like) => like.email === req.params.email).length >
+      0
+    ) {
+      const removeIndex = letter.unlikes
         .map((like) => like.email)
         .indexOf(req.params.email);
-      letter.likes.splice(removeIndex, 1);
-    } else {
-      const removeIndex = letter.unlikes
-        .map((unlike) => unlike.email)
-        .indexOf(req.params.email);
       letter.unlikes.splice(removeIndex, 1);
+    } else {
+      letter.unlikes.push({ email: req.params.email });
     }
 
     await letter.save();
