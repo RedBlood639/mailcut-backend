@@ -13,14 +13,14 @@ const sendEmailVerify = async (email, uniqueString) => {
     smtpTransport({
       service: "gmail",
       auth: {
-        user: "webdream1108@gmail.com",
-        pass: "dre@m0428",
+        user: "hotgold0905@gmail.com",
+        pass: "GoldLion123:)",
       },
     })
   );
-
+  // qhhmwouwjcgryjfj
   let mailOptions;
-  let sender = "madreply";
+  let sender = "hotgold0905@gmail.com";
   mailOptions = {
     from: sender,
     to: email,
@@ -51,14 +51,13 @@ router.get("/", async (req, res) => {
 // @desc   Remove user
 // @access Public
 router.delete("/:email", async (req, res) => {
-  const user = await UserModel.findOne({ email: req.params.email });
-
-  if (!user) {
-    return res.status(404).json({ error: "User not found" });
-  }
-
-  await user.remove();
-  return res.json({ success: "User removed" });
+  UserModel.findOneAndRemove({ email: req.params.email }, (err, user) => {
+    if (err) {
+      console.log(err);
+    } else {
+      return res.json(user);
+    }
+  });
 });
 
 // @route  POST users/register
@@ -88,13 +87,12 @@ router.post("/register", async (req, res) => {
 
     newUser.password = await bcrypt.hash(reqData.password, salt);
 
-    await newUser.save();
-
     if (newUser.isAllow) {
       return res.json({ success: "You registered successful!" });
     } else {
       const emailsent = await sendEmailVerify(newUser.email, uniqueString);
       if (emailsent) {
+        await newUser.save();
         return res.json({
           success: "Please check your mailbox. Verify your email.",
         });
