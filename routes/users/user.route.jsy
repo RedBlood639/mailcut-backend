@@ -1,4 +1,3 @@
-
 const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
@@ -15,7 +14,7 @@ const sendEmailVerify = async (email, uniqueString) => {
       service: "gmail",
       auth: {
         user: "hotgold0905@gmail.com",
-        pass: "qhhmwouwjcgryjfj",
+        pass: "GoldLion123:)",
       },
     })
   );
@@ -89,8 +88,8 @@ router.post("/register", async (req, res) => {
     newUser.password = await bcrypt.hash(reqData.password, salt);
 
     if (newUser.isAllow) {
-      await newUser.save();
-      return res.json({ success: "You registered successful!" });
+	await newUser.save();
+	return res.json({ success: "You registered successful!" });
     } else {
       const emailsent = await sendEmailVerify(newUser.email, uniqueString);
       if (emailsent) {
