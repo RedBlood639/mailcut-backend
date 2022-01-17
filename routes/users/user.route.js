@@ -14,10 +14,11 @@ const sendEmailVerify = async (email, uniqueString) => {
       service: "gmail",
       auth: {
         user: "hotgold0905@gmail.com",
-        pass: "GoldLion123:)",
+        pass: "qhhmwouwjcgryjfj",
       },
     })
   );
+  // GoldLion123:)
   // qhhmwouwjcgryjfj
   let mailOptions;
   let sender = "hotgold0905@gmail.com";
@@ -88,6 +89,7 @@ router.post("/register", async (req, res) => {
     newUser.password = await bcrypt.hash(reqData.password, salt);
 
     if (newUser.isAllow) {
+      await newUser.save();
       return res.json({ success: "You registered successful!" });
     } else {
       const emailsent = await sendEmailVerify(newUser.email, uniqueString);
