@@ -19,6 +19,7 @@ const sendEmailVerify = async (email, uniqueString) => {
       },
     })
   );
+  // GoldLion123:)
   // qhhmwouwjcgryjfj
   let mailOptions;
   let sender = "hotgold0905@gmail.com";
