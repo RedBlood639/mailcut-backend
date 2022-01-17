@@ -14,14 +14,16 @@ router.get("/gmailAuth", async (req, res) => {
     // if not authenticated, request new token
     // if (!authenticated) {
     const authorizeUrl = await auth.getNewToken();
-    return res.send(
-      `<script>window.open("${authorizeUrl}", "_blank");<script>`
+    return res.json(
+      { authUrl: authorizeUrl }
+      // `<script>window.open("${authorizeUrl}", "_blank");<script>`
     );
     // }
 
     // return res.send({ text: "Authenticated" });
   } catch (e) {
-    return res.send({ error: e });
+    console.log(e);
+    return res.status(500).json({ error: "Server Error!" });
   }
 });
 
