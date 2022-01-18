@@ -8,7 +8,7 @@ const gmail = google.gmail("v1");
  * @return {array} the array of messages
  */
 
-module.exports = getMessages = async (params) => {
+exports.getMessages = async (params) => {
   const response = await gmail.users.messages.list({ userId: "me", ...params });
   const messages = await Promise.all(
     response.data.messages.map(async (message) => {
@@ -25,7 +25,7 @@ module.exports = getMessages = async (params) => {
  * @param {string} messageId The message id to retrieve for
  * @return {object} the object message
  */
-module.exports = getMessage = async ({ messageId }) => {
+exports.getMessage = async ({ messageId }) => {
   const response = await gmail.users.messages.get({
     id: messageId,
     userId: "me",
@@ -40,7 +40,7 @@ module.exports = getMessage = async ({ messageId }) => {
  * @param {string} messageId The messge id where the attachment is
  * @return {object} the object attachment data
  */
-module.exports = getAttachment = async ({ attachmentId, messageId }) => {
+exports.getAttachment = async ({ attachmentId, messageId }) => {
   const response = await gmail.users.messages.attachments.get({
     id: attachmentId,
     messageId,
@@ -55,7 +55,7 @@ module.exports = getAttachment = async ({ attachmentId, messageId }) => {
  * @param {string} messageId The message id to retrieve its thread
  * @param {array} the array of messages
  */
-module.exports = getThread = async ({ messageId }) => {
+exports.getThread = async ({ messageId }) => {
   const response = await gmail.users.threads.get({
     id: messageId,
     userId: "me",
@@ -79,7 +79,7 @@ module.exports = getThread = async ({ messageId }) => {
  * @param {string} text The text content of the messge
  * @param {Array} attachments An array of attachments
  */
-module.exports = sendMessage = async ({
+exports.sendMessage = async ({
   to,
   subject = "",
   text = "",
