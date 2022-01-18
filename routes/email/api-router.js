@@ -76,6 +76,7 @@ router.post("/sendMessage", async (req, res) => {
 
     return res.send({ message: "Message sent!" });
   } catch (e) {
+    console.log(e);
     return res.send({ error: e });
   }
 });
