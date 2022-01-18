@@ -12,10 +12,10 @@ router.get("/getMessages", async (req, res) => {
     const params = req.query;
     const messages = await gmail.getMessages(params);
 
-    return res.send({ messages });
+    return res.json({ messages });
   } catch (e) {
     console.error(e);
-    return res.send({ error: e });
+    return res.json({ error: "Server Error" });
   }
 });
 
@@ -23,10 +23,10 @@ router.get("/getMessage/:id", async (req, res) => {
   try {
     const messages = await gmail.getMessage({ messageId: req.params.id });
 
-    return res.send({ messages });
+    return res.json({ messages });
   } catch (e) {
     console.error(e);
-    return res.send({ error: e });
+    return res.json({ error: "Server Error" });
   }
 });
 
@@ -74,10 +74,10 @@ router.post("/sendMessage", async (req, res) => {
 
     await gmail.sendMessage({ to, subject, text, attachments });
 
-    return res.send({ message: "Message sent!" });
+    return res.json({ message: "Message sent!" });
   } catch (e) {
     console.log(e);
-    return res.send({ error: e });
+    return res.json({ error: "Server Error" });
   }
 });
 
