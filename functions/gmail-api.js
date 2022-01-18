@@ -37,7 +37,7 @@ const getMessageMiddleware = async ({ messageId }) => {
  * @return {object} the object message
  */
 exports.getMessage = async ({ messageId }) => {
-  return await getMessageMiddleware(messageId);
+  return await getMessageMiddleware({ messageId });
 };
 
 /**
