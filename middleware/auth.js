@@ -2,7 +2,7 @@ const auth = require("../functions/gmail-auth");
 const jwt = require("jsonwebtoken");
 const config = require("config");
 
-export const auth = (req, res, next) => {
+exports.auth = (req, res, next) => {
   const token = req.header("x-auth-token");
 
   if (!token) {
@@ -19,7 +19,7 @@ export const auth = (req, res, next) => {
   }
 };
 
-export const authMiddleware = async (req, res, next) => {
+exports.authMiddleware = async (req, res, next) => {
   try {
     const authenticated = await auth.authorize();
     if (!authenticated) {

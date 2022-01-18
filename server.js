@@ -27,9 +27,9 @@ app.use(
 app.use("/user", userRouter);
 app.use("/letter", letterRouter);
 
+app.use("/auth", authRoudter);
 app.use(authMiddleware);
 
-app.use("/auth", authRoudter);
 app.use("/email", emailRouter);
 
 const PORT = process.env.PORT || 5000;
