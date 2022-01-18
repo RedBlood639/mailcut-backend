@@ -19,6 +19,18 @@ router.get("/getMessages", async (req, res) => {
   }
 });
 
+router.get("/getMessage/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const messages = await gmail.getMessage(id);
+
+    return res.send({ messages });
+  } catch (e) {
+    console.error(e);
+    return res.send({ error: e });
+  }
+});
+
 /**
  * Route for getting a specific attachment from a message
  */
