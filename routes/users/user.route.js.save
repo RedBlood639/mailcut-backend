@@ -1,4 +1,3 @@
-
 const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
@@ -15,11 +14,10 @@ const sendEmailVerify = async (email, uniqueString) => {
       service: "gmail",
       auth: {
         user: "hotgold0905@gmail.com",
-        pass: "qhhmwouwjcgryjfj",
+        pass: "",
       },
     })
   );
-  // GoldLion123:)
   // qhhmwouwjcgryjfj
   let mailOptions;
   let sender = "hotgold0905@gmail.com";
