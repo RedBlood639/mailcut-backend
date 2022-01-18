@@ -45,8 +45,8 @@ exports.getOAuth2Client = () => {
 const getOAuth2ClientFunction = () => {
   const GOOGLE_CLIENT_ID = credentials.web.client_id;
   const GOOGLE_CLIENT_SECRET = credentials.web.client_secret;
-  const GOOGLE_CALLBACK_URL = "https://api.madreply.com/auth/oauth2Callback";
-  // const GOOGLE_CALLBACK_URL = credentials.web.redirect_uris[0];
+  // const GOOGLE_CALLBACK_URL = "https://api.madreply.com/auth/oauth2Callback";
+  const GOOGLE_CALLBACK_URL = credentials.web.redirect_uris[1];
 
   const oAuth2Client = new google.auth.OAuth2(
     GOOGLE_CLIENT_ID,
