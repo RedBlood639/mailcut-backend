@@ -27,7 +27,7 @@ app.use(
 app.use("/user", userRouter);
 app.use("/letter", letterRouter);
 
-app.use("/auth", authRoudter);
+app.use("/auth", authRouter);
 app.use(authMiddleware);
 
 app.use("/email", emailRouter);
