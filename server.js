@@ -8,6 +8,7 @@ const userRouter = require("./routes/users/user.route");
 const letterRouter = require("./routes/letters/letters.route");
 const authRouter = require("./routes/email/auth-routes");
 const emailRouter = require("./routes/email/api-router");
+const { authMiddleware } = require("./middleware/auth");
 
 const connectDB = require("./config/db");
 const app = express();
@@ -26,7 +27,9 @@ app.use(
 app.use("/user", userRouter);
 app.use("/letter", letterRouter);
 
-app.use("/auth", authRouter);
+app.use(authMiddleware);
+
+app.use("/auth", authRoudter);
 app.use("/email", emailRouter);
 
 const PORT = process.env.PORT || 5000;
