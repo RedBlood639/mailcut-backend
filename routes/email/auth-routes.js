@@ -43,7 +43,7 @@ router.get("/oauth2Callback", async (req, res) => {
     await auth.saveToken(tokens);
 
     console.log("Successfully authorized");
-    location.href = "https://madreply.com/myemails";
+    return res.redirect("https://madreply.com/myemails");
   } catch (e) {
     return res.send({ error: e });
   }
