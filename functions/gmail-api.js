@@ -1,5 +1,5 @@
 const { google } = require("googleapis");
-const parseMessage = "gmail-api-parse-message";
+const parseMessage = require("gmail-api-parse-message");
 const MailComposer = require("nodemailer/lib/mail-composer");
 const gmail = google.gmail("v1");
 
