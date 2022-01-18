@@ -12,12 +12,23 @@ exports.getMessages = async (params) => {
   const response = await gmail.users.messages.list({ userId: "me", ...params });
   const messages = await Promise.all(
     response.data.messages.map(async (message) => {
-      const messageResponse = await getMessage({ messageId: message.id });
+      const messageResponse = await getMessageMiddleware({
+        messageId: message.id,
+      });
       return parseMessage(messageResponse);
     })
   );
 
   return messages;
+};
+
+const getMessageMiddleware = async ({ messageId }) => {
+  const response = await gmail.users.messages.get({
+    id: messageId,
+    userId: "me",
+  });
+  const message = parseMessage(response.data);
+  return message;
 };
 
 /**
@@ -26,12 +37,7 @@ exports.getMessages = async (params) => {
  * @return {object} the object message
  */
 exports.getMessage = async ({ messageId }) => {
-  const response = await gmail.users.messages.get({
-    id: messageId,
-    userId: "me",
-  });
-  const message = parseMessage(response.data);
-  return message;
+  return await getMessageMiddleware(messageId);
 };
 
 /**
