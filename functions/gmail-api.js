@@ -93,9 +93,7 @@ exports.sendMessage = async ({
 }) => {
   // build and encode the mail
   const buildMessage = () =>
-    new Promise() <
-    string >
-    ((resolve, reject) => {
+    new Promise((resolve, reject) => {
       const message = new MailComposer({
         to,
         subject,
