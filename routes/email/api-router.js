@@ -21,8 +21,7 @@ router.get("/getMessages", async (req, res) => {
 
 router.get("/getMessage/:id", async (req, res) => {
   try {
-    const { id } = req.params;
-    const messages = await gmail.getMessage(id);
+    const messages = await gmail.getMessage(req.params.id);
 
     return res.send({ messages });
   } catch (e) {
