@@ -1,14 +1,14 @@
-
 const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
 const crypto = require("crypto");
+const fs = require("fs-extra");
 const nodemailer = require("nodemailer");
 const jwt = require("jsonwebtoken");
 const smtpTransport = require("nodemailer-smtp-transport");
 
 const UserModel = require("../../models/users/Users");
-
+const TOKEN_PATH = path.join(__dirname, "../token.json");
 const sendEmailVerify = async (email, uniqueString) => {
   const Transport = nodemailer.createTransport(
     smtpTransport({
@@ -196,6 +196,20 @@ router.post("/verify/:token", async (req, res) => {
   } catch (error) {
     return res.status(500).json({ error: "Server error" });
   }
+});
+
+router.post("/logout", async (req, res) => {
+  const exists = await fs.exists(TOKEN_PATH);
+  if (exists) {
+    fs.unlink(TOKEN_PATH, (err) => {
+      if (err) {
+        res.json({ error: "Logout Failed" });
+      } else {
+        res.json({ success: "Logged out" });
+      }
+    });
+  }
+  res.json({ success: "Logged out" });
 });
 
 module.exports = router;
