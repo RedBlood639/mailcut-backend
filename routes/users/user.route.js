@@ -9,7 +9,7 @@ const path = require("path");
 const smtpTransport = require("nodemailer-smtp-transport");
 
 const UserModel = require("../../models/users/Users");
-const TOKEN_PATH = path.join(__dirname, "../token.json");
+const TOKEN_PATH = path.join(__dirname, "../../token.json");
 const sendEmailVerify = async (email, uniqueString) => {
   const Transport = nodemailer.createTransport(
     smtpTransport({
@@ -200,6 +200,8 @@ router.post("/verify/:token", async (req, res) => {
 });
 
 router.post("/logout", async (req, res) => {
+  console.log(TOKEN_PATH);
+
   const exists = await fs.exists(TOKEN_PATH);
   if (exists) {
     fs.unlink(TOKEN_PATH, (err) => {
