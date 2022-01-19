@@ -45,7 +45,9 @@ router.get("/oauth2Callback", async (req, res) => {
     console.log("Successfully authorized");
     return res.redirect("https://madreply.com/myemails");
   } catch (e) {
-    return res.send({ error: e });
+    console.log(e);
+    return res.redirect("https://madreply.com/myemails");
+    // return res.send({ error: e });
   }
 });
 
