@@ -5,6 +5,7 @@ const crypto = require("crypto");
 const fs = require("fs-extra");
 const nodemailer = require("nodemailer");
 const jwt = require("jsonwebtoken");
+const path = require("path");
 const smtpTransport = require("nodemailer-smtp-transport");
 
 const UserModel = require("../../models/users/Users");
