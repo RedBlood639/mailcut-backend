@@ -137,7 +137,7 @@ router.post("/login", async (req, res) => {
       },
     };
 
-    jwt.sign(payload, "123456789", { expiresIn: 3600 }, (err, token) => {
+    jwt.sign(payload, "123456789", { expiresIn: 36000 }, (err, token) => {
       if (err) {
         throw err;
       }
