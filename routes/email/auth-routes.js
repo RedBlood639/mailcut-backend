@@ -7,13 +7,16 @@ const router = express.Router();
  * Route for authenticate user, otherwise request a new token
  * prompting for user authorization
  */
-router.get("/gmailAuth", async (req, res) => {
+
+router.get("/gmailAuth/:email", async (req, res) => {
+  global[req.params.email] = req.params.email;
   try {
     // const authenticated = await auth.authorize();
 
     // if not authenticated, request new token
     // if (!authenticated) {
     const authorizeUrl = await auth.getNewToken();
+    console.log(global);
     return res.json(
       { authUrl: authorizeUrl }
       // `<script>window.open("${authorizeUrl}", "_blank");<script>`
@@ -33,9 +36,10 @@ router.get("/gmailAuth", async (req, res) => {
  */
 router.get("/oauth2Callback", async (req, res) => {
   try {
-    // get authorization code from request
-    const code = req.query.code;
+    // get authorization code from request\
 
+    const code = req.query.code;
+    console.log(code);
     const oAuth2Client = auth.getOAuth2Client();
     const result = await oAuth2Client.getToken(code);
     const tokens = result.tokens;
