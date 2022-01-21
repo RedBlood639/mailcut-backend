@@ -204,16 +204,19 @@ router.post("/logout", async (req, res) => {
   // console.log(TOKEN_PATH);
 
   const exists = await fs.exists(
-    path.join(__dirname, "../../token_" + email + ".json")
+    path.join(__dirname, "../../token_" + req.body.email + ".json")
   );
   if (exists) {
-    fs.unlink(path.join(__dirname, "../../token_" + email + ".json"), (err) => {
-      if (err) {
-        res.json({ error: "Logout Failed" });
-      } else {
-        res.json({ success: "Logged out" });
+    fs.unlink(
+      path.join(__dirname, "../../token_" + req.body.email + ".json"),
+      (err) => {
+        if (err) {
+          res.json({ error: "Logout Failed" });
+        } else {
+          res.json({ success: "Logged out" });
+        }
       }
-    });
+    );
   }
   res.json({ success: "Logged out" });
 });
