@@ -7,7 +7,7 @@ const router = express.Router();
  * Route for getting gmail messageskobe66520
 
  */
-router.get("/getMessages", async (req, res) => {
+router.post("/getMessages", async (req, res) => {
   try {
     const params = req.query;
     const messages = await gmail.getMessages(params);
@@ -19,7 +19,7 @@ router.get("/getMessages", async (req, res) => {
   }
 });
 
-router.get("/getMessage/:id", async (req, res) => {
+router.post("/getMessage/:id", async (req, res) => {
   try {
     const messages = await gmail.getMessage({ messageId: req.params.id });
 

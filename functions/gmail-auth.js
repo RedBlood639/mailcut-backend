@@ -2,6 +2,7 @@ const { google } = require("googleapis");
 const fs = require("fs-extra");
 const path = require("path");
 const credentials = require("../config/credentials.json");
+const getPath = require("../utils/getPath");
 
 const SCOPES = [
   "https://www.googleapis.com/auth/gmail.readonly",
@@ -9,12 +10,12 @@ const SCOPES = [
   "https://www.googleapis.com/auth/gmail.compose",
   "https://www.googleapis.com/auth/gmail.send",
 ];
-const TOKEN_PATH = path.join(__dirname, "../token.json");
+// const TOKEN_PATH = path.join(__dirname, "../token.json");
 
-exports.authorize = async () => {
+exports.authorize = async (email) => {
   // check if the token already exists
-  const exists = await fs.exists(TOKEN_PATH);
-  const token = exists ? await fs.readFile(TOKEN_PATH, "utf8") : "";
+  const exists = await fs.exists(getPath(email));
+  const token = exists ? await fs.readFile(getPath(email), "utf8") : "";
 
   if (token) {
     authenticate(JSON.parse(token));
@@ -34,8 +35,8 @@ exports.getNewToken = async () => {
   });
 };
 
-exports.saveToken = async (token) => {
-  await fs.writeFile(TOKEN_PATH, JSON.stringify(token));
+exports.saveToken = async (token, email) => {
+  await fs.writeFile(getPath(email), JSON.stringify(token));
 };
 
 exports.getOAuth2Client = () => {

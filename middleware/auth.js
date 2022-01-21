@@ -20,8 +20,9 @@ exports.auth = (req, res, next) => {
 };
 
 exports.authMiddleware = async (req, res, next) => {
+  // console.log(req.body.email);
   try {
-    const authenticated = await auth.authorize();
+    const authenticated = await auth.authorize(req.body.email);
     if (!authenticated) {
       throw "No Authenticated";
     }

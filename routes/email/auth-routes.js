@@ -32,14 +32,14 @@ router.get("/gmailAuth/:email", async (req, res) => {
  * Callback route after authorizing the app
  * Receives the code for claiming new token
  */
-router.get("/oauth2Callback", async (req, res) => {
+router.post("/oauth2Callback", async (req, res) => {
   try {
     // get authorization code from request\
-    const code = req.query.code;
+    const { code, email } = req.body;
     const oAuth2Client = auth.getOAuth2Client();
     const result = await oAuth2Client.getToken(code);
     const tokens = result.tokens;
-    await auth.saveToken(tokens);
+    await auth.saveToken(tokens, email);
     return res.redirect("https://madreply.com/myemails");
   } catch (e) {
     console.log(e);
