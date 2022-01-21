@@ -35,16 +35,11 @@ router.get("/gmailAuth/:email", async (req, res) => {
 router.get("/oauth2Callback", async (req, res) => {
   try {
     // get authorization code from request\
-    console.log(req);
     const code = req.query.code;
     const oAuth2Client = auth.getOAuth2Client();
     const result = await oAuth2Client.getToken(code);
     const tokens = result.tokens;
-    const info = await oAuth2Client.getTokenInfo(result);
-    console.log(info);
-    console.log(result);
     await auth.saveToken(tokens);
-    console.log("Successfully authorized");
     return res.redirect("https://madreply.com/myemails");
   } catch (e) {
     console.log(e);
