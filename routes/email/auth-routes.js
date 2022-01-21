@@ -40,7 +40,7 @@ router.get("/oauth2Callback", async (req, res) => {
     const oAuth2Client = auth.getOAuth2Client();
     const result = await oAuth2Client.getToken(code);
     const tokens = result.tokens;
-    const info = getTokenInfo(result);
+    const info = await oAuth2Client.getTokenInfo(result);
     console.log(info);
     console.log(result);
     await auth.saveToken(tokens);
