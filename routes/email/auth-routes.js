@@ -40,10 +40,10 @@ router.post("/oauth2Callback", async (req, res) => {
     const result = await oAuth2Client.getToken(code);
     const tokens = result.tokens;
     await auth.saveToken(tokens, email);
-    return res.redirect("https://madreply.com/myemails");
+    return res.json({ success: true });
   } catch (e) {
     console.log(e);
-    return res.redirect("https://madreply.com/myemails");
+    return res.json({ error: true });
     // return res.send({ error: e });
   }
 });
