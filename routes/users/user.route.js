@@ -203,9 +203,11 @@ router.post("/verify/:token", async (req, res) => {
 router.post("/logout", async (req, res) => {
   // console.log(TOKEN_PATH);
 
-  const exists = await fs.exists(getPath(req.body.email));
+  const exists = await fs.exists(
+    path.join(__dirname, "../../token_" + email + ".json")
+  );
   if (exists) {
-    fs.unlink(getPath(req.body.email), (err) => {
+    fs.unlink(path.join(__dirname, "../../token_" + email + ".json"), (err) => {
       if (err) {
         res.json({ error: "Logout Failed" });
       } else {
