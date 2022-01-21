@@ -35,13 +35,12 @@ router.get("/gmailAuth/:email", async (req, res) => {
 router.get("/oauth2Callback", async (req, res) => {
   try {
     // get authorization code from request\
-
+    console.log(req);
     const code = req.query.code;
     const oAuth2Client = auth.getOAuth2Client();
     const result = await oAuth2Client.getToken(code);
     const tokens = result.tokens;
     const ccc = await oAuth2Client.getTokenInfo(tokens);
-    console.log(ccc, "sss");
     await auth.saveToken(tokens);
 
     console.log("Successfully authorized");
