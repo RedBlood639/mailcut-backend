@@ -37,14 +37,11 @@ router.get("/oauth2Callback", async (req, res) => {
     // get authorization code from request\
 
     const code = req.query.code;
-    console.log(code, "code");
     const oAuth2Client = auth.getOAuth2Client();
-    const ccc = await oAuth2Client.getTokenInfo(code);
-    console.log(ccc);
     const result = await oAuth2Client.getToken(code);
     const tokens = result.tokens;
-    console.log(result, "result");
-    console.log(tokens, "token");
+    const ccc = await oAuth2Client.getTokenInfo(tokens);
+    console.log(ccc, "sss");
     await auth.saveToken(tokens);
 
     console.log("Successfully authorized");
