@@ -55,7 +55,7 @@ router.get("/:id", async (req, res) => {
 router.post("/like", async (req, res) => {
   const { email, id } = req.body;
   try {
-    const emailData = await EmailModel.findById(id);
+    const emailData = await EmailModel.findOne({ _id: id });
     if (emailData.likes.filter((item) => item === email).length > 0) {
       const removeIndex = emailData.likes.map((like) => like).indexOf(email);
       emailData.likes.splice(removeIndex, 1);
@@ -84,7 +84,7 @@ router.post("/like", async (req, res) => {
 router.post("/unlike", async (req, res) => {
   const { email, id } = req.body;
   try {
-    const emailData = await EmailModel.findById(id);
+    const emailData = await EmailModel.findOne({ _id: id });
     if (emailData.unlikes.filter((item) => item === email).length > 0) {
       const removeIndex = emailData.likes.map((like) => like).indexOf(email);
       emailData.unlikes.splice(removeIndex, 1);
