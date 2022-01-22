@@ -26,8 +26,8 @@ const EmailSchema = new mongoose.Schema({
   publishDate: {
     type: Date,
   },
-  likes: [{ email: { type: String } }],
-  unlikes: [{ email: { type: String } }],
+  likes: [String],
+  unlikes: [String],
 });
 
 module.exports = mongoose.model("email", EmailSchema);
