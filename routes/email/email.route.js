@@ -18,7 +18,7 @@ router.get("/", async (req, res) => {
 
 router.delete("/:id", async (req, res) => {
   try {
-    const email = await LetterModel.findById(req.params.id);
+    const email = await EmailModel.findById(req.params.id);
 
     if (!email) {
       return res.status(404).json({ error: "Email not found." });
