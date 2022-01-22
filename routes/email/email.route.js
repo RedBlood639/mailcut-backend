@@ -55,7 +55,7 @@ router.get("/get/:id", async (req, res) => {
  */
 router.post("/like/:id", async (req, res) => {
   try {
-    const { email } = req.body;
+    const { liker } = req.body;
     const { id } = req.params;
     console.log(email, id);
     const emailData = await EmailModel.findById(id);
@@ -85,7 +85,7 @@ router.post("/like/:id", async (req, res) => {
  * unlike the published email
  */
 router.post("/unlike/:id", async (req, res) => {
-  const { email } = req.body;
+  const { unliker } = req.body;
   const { id } = req.params;
   try {
     const emailData = await EmailModel.findById(id);
