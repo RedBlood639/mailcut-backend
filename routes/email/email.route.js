@@ -16,6 +16,22 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.delete("/:id", async (req, res) => {
+  try {
+    const email = await LetterModel.findById(req.params.id);
+
+    if (!email) {
+      return res.status(404).json({ error: "Email not found." });
+    }
+
+    await email.remove();
+
+    res.json({ success: "Email removed" });
+  } catch (error) {
+    return res.status(500).json({ error: "Server Error." });
+  }
+});
+
 /**
  * Publish email
  */
