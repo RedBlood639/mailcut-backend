@@ -56,6 +56,7 @@ router.get("/:id", async (req, res) => {
 router.post("/like", async (req, res) => {
   const { email, id } = req.body;
   try {
+    console.log(email, id);
     const emailData = await EmailModel.findById(mongoose.Types.ObjectId(id));
     // if (emailData.likes.filter((item) => item === email).length > 0) {
     //   const removeIndex = emailData.likes.map((like) => like).indexOf(email);
