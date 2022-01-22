@@ -54,7 +54,7 @@ router.get("/:id", async (req, res) => {
  * like the published email
  */
 router.post("/like", async (req, res) => {
-  console.log(req.body.id);
+  console.log(req.body);
   console.log(req.body.email);
   const emailData = await EmailModel.findById(mongoose.Types.ObjectId(id));
   return res.json(emailData);
