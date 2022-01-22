@@ -57,20 +57,20 @@ router.post("/like", async (req, res) => {
   const { email, id } = req.body;
   try {
     const emailData = await EmailModel.findById(mongoose.Types.ObjectId(id));
-    if (emailData.likes.filter((item) => item === email).length > 0) {
-      const removeIndex = emailData.likes.map((like) => like).indexOf(email);
-      emailData.likes.splice(removeIndex, 1);
-    } else {
-      emailData.likes.push(email);
-      if (emailData.unlikes.filter((item) => item === email).length > 0) {
-        const removeIndex = emailData.unlikes
-          .map((like) => like)
-          .indexOf(email);
-        emailData.unlikes.splice(removeIndex, 1);
-      }
-    }
+    // if (emailData.likes.filter((item) => item === email).length > 0) {
+    //   const removeIndex = emailData.likes.map((like) => like).indexOf(email);
+    //   emailData.likes.splice(removeIndex, 1);
+    // } else {
+    //   emailData.likes.push(email);
+    //   if (emailData.unlikes.filter((item) => item === email).length > 0) {
+    //     const removeIndex = emailData.unlikes
+    //       .map((like) => like)
+    //       .indexOf(email);
+    //     emailData.unlikes.splice(removeIndex, 1);
+    //   }
+    // }
 
-    await emailData.save();
+    // await emailData.save();
 
     return res.json(emailData);
   } catch (error) {
