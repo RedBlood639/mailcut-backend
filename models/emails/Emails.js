@@ -8,6 +8,9 @@ const EmailSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  subject: {
+    type: String,
+  },
   from: {
     type: String,
   },
