@@ -79,8 +79,8 @@ router.post("/register", async (req, res) => {
     const uniqueString = crypto.randomBytes(32).toString("hex");
 
     const newUser = new UserModel({
-      // fName: reqData.fName,
-      // lName: reqData.lName,
+      fName: reqData.fName,
+      lName: reqData.lName,
       email: reqData.email,
       password: reqData.password,
       isAllow: reqData.isAllow,
@@ -133,8 +133,8 @@ router.post("/login", async (req, res) => {
     const payload = {
       user: {
         email: user.email,
-        // fName: user.fName,
-        // lName: user.lName,
+        fName: user.fName,
+        lName: user.lName,
         isAllow: user.isAllow,
       },
     };
