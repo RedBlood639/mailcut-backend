@@ -8,7 +8,7 @@ const LetterModel = require("../../models/letters/Letters");
 // @access Public
 router.get("/", async (req, res) => {
   try {
-    const letters = await LetterModel.find({ stateFlag: 0 }).sort({ date: -1 });
+    const letters = await LetterModel.find().sort({ date: -1 });
     res.json(letters);
   } catch (err) {
     res.status(500).json({ error: "Server error" });
