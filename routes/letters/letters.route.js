@@ -226,6 +226,7 @@ router.post("/addcomment", async (req, res) => {
     const letter = await LetterModel.findById(req.body.letter_id).populate(
       "comments"
     );
+    console.log(comment);
     await letter.comments.push(comment);
     await letter.save();
     res.json(letter);
