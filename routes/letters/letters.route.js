@@ -221,13 +221,14 @@ router.post("/addcomment", async (req, res) => {
   try {
     const newData = new CommentModel(req.body);
     const comment = await newData.save();
-    const letter = await LetterModel.findById(req.body.letter_id).populate(
+    const letter = await LetterModel.findById(req.body.letter_id);
+    console.log(comment);
+    await letter.comments.push(comment);
+    await letter.save();
+    const result = await LetterModel.findById(req.body.letter_id).populate(
       "comments"
     );
-    console.log(comment);
-    await letter.comments.push(comment._id);
-    await letter.save();
-    res.json(letter);
+    res.json(result);
   } catch (error) {
     console.log(error);
     return res.status(500).json({ error: "Server Error!" });
