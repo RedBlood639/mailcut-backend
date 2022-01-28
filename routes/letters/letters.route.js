@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 const LetterModel = require("../../models/letters/Letters");
+const CommentModel = require("../../models/comments/Comment");
 
 // @route  GET /letter
 // @desc   Get all letters
@@ -20,10 +21,9 @@ router.get("/", async (req, res) => {
 // @access Public
 router.get("/:id", async (req, res) => {
   try {
-    const letters = await LetterModel.findById(req.params.id);
-    // .populate(
-    //   "comments"
-    // );
+    const letters = await LetterModel.findById(req.params.id).populate(
+      "comments"
+    );
     res.json(letters);
   } catch (err) {
     console.log(err);
@@ -182,6 +182,22 @@ router.delete("/:id", async (req, res) => {
     res.json({ success: "Letter removed" });
   } catch (error) {
     return res.status(500).json({ error: "Server Error." });
+  }
+});
+
+// @route  POST /letter/addcomment
+// @desc   add a comment
+// @access Private
+router.post("/addcomment", (req, res) => {
+  try {
+    const newData = new CommentModel(req.body);
+    await newData.save();
+    const letters = await LetterModel.findById(req.params.id).populate(
+      "comments"
+    );
+    res.json(letters);
+  } catch (error) {
+    return res.status(500).json({ error: "Server Error!" });
   }
 });
 
