@@ -220,14 +220,12 @@ router.delete("/comment/one/:id", async (req, res) => {
 router.post("/addcomment", async (req, res) => {
   try {
     const newData = new CommentModel(req.body);
-    const comment = await newData.save().then((c) => {
-      return c._id;
-    });
+    const comment = await newData.save();
     const letter = await LetterModel.findById(req.body.letter_id).populate(
       "comments"
     );
     console.log(comment);
-    await letter.comments.push(comment);
+    await letter.comments.push(comment._id);
     await letter.save();
     res.json(letter);
   } catch (error) {
