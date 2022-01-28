@@ -208,7 +208,6 @@ router.delete("/comment/one/:id", async (req, res) => {
     await letter.comments.splice(removeIndex, 1);
     letter.save();
   }
-  console.log(letter);
 
   await comment.remove();
   res.json({ success: "Comment removed" });
@@ -222,7 +221,6 @@ router.post("/addcomment", async (req, res) => {
     const newData = new CommentModel(req.body);
     const comment = await newData.save();
     const letter = await LetterModel.findById(req.body.letter_id);
-    console.log(comment);
     await letter.comments.push(comment);
     await letter.save();
     const result = await LetterModel.findById(req.body.letter_id).populate(
