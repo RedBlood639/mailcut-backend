@@ -195,7 +195,7 @@ router.post("/addcomment", async (req, res) => {
       return c._id;
     });
     const letter = await LetterModel.findById(req.body.letter_id).populate(
-      "comment"
+      "comments"
     );
     letter.comments.push(comment);
     letter.save();
