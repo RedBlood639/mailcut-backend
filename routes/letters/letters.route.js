@@ -201,6 +201,7 @@ router.post("/addcomment", async (req, res) => {
     letter.save();
     res.json(letter);
   } catch (error) {
+    console.log(error);
     return res.status(500).json({ error: "Server Error!" });
   }
 });
