@@ -188,7 +188,7 @@ router.delete("/:id", async (req, res) => {
 // @route  GET /letter/comment
 // @desc   get comments
 // @access Private
-router.get("/comments", async (req, res) => {
+router.get("/comments/all", async (req, res) => {
   const data = await CommentModel.find();
   return res.json(data);
 });
@@ -196,7 +196,7 @@ router.get("/comments", async (req, res) => {
 // @route  DELETE /letter/comment/:id
 // @desc   delete a comment by id
 // @access Private
-router.delete("/comment/:id", async (req, res) => {
+router.delete("/comment/one/:id", async (req, res) => {
   const comment = await CommentModel.findById(req.params.id);
   if (!comment) {
     return res.status(404).json({ error: "Comment not found." });
