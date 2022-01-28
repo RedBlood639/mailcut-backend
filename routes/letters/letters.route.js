@@ -191,11 +191,13 @@ router.delete("/:id", async (req, res) => {
 router.post("/addcomment", async (req, res) => {
   try {
     const newData = new CommentModel(req.body);
-    await newData.save();
-    const letters = await LetterModel.findById(req.body.letter_id).populate(
-      "comments"
-    );
-    res.json(letters);
+    newData.save().then((c) => {
+      console.log(c);
+    });
+    // const letters = await LetterModel.findById(req.body.letter_id).populate(
+    //   "comment"
+    // );
+    res.json(newData);
   } catch (error) {
     return res.status(500).json({ error: "Server Error!" });
   }
