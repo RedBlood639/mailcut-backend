@@ -188,7 +188,7 @@ router.delete("/:id", async (req, res) => {
 // @route  POST /letter/addcomment
 // @desc   add a comment
 // @access Private
-router.post("/addcomment", (req, res) => {
+router.post("/addcomment", async (req, res) => {
   try {
     const newData = new CommentModel(req.body);
     await newData.save();
