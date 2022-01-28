@@ -197,20 +197,27 @@ router.get("/comments/all", async (req, res) => {
 // @desc   delete a comment by id
 // @access Private
 router.delete("/comment/one/:id", async (req, res) => {
-  const comment = await CommentModel.findById(req.params.id);
-  if (!comment) {
-    return res.status(404).json({ error: "Comment not found." });
-  }
+  try {
+    const comment = await CommentModel.findById(req.params.id);
+    if (!comment) {
+      return res.status(404).json({ error: "Comment not found." });
+    }
 
-  const letter = await LetterModel.findById(comment.letter_id);
-  const removeIndex = letter.comments.indexOf(comment._id);
-  if (removeIndex !== -1) {
-    await letter.comments.splice(removeIndex, 1);
-    letter.save();
-  }
+    const letter = await LetterModel.findById(comment.letter_id);
+    const removeIndex = letter.comments.indexOf(comment._id);
+    if (removeIndex !== -1) {
+      await letter.comments.splice(removeIndex, 1);
+      letter.save();
+    }
 
-  await comment.remove();
-  res.json({ success: "Comment removed" });
+    await comment.remove();
+    const result = await LetterModel.findById(req.body.letter_id).populate(
+      "comments"
+    );
+    res.json(result);
+  } catch (err) {
+    return res.status(500).json({ error: "Server Error!" });
+  }
 });
 
 // @route  POST /letter/addcomment
