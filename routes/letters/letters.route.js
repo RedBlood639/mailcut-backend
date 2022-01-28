@@ -185,6 +185,35 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
+// @route  GET /letter/comment
+// @desc   get comments
+// @access Private
+router.get("/comments", async (req, res) => {
+  const data = await CommentModel.find();
+  return res.json(data);
+});
+
+// @route  DELETE /letter/comment/:id
+// @desc   delete a comment by id
+// @access Private
+router.delete("/comment/:id", async (req, res) => {
+  const comment = await CommentModel.findById(req.params.id);
+  if (!comment) {
+    return res.status(404).json({ error: "Comment not found." });
+  }
+
+  const letter = await LetterModel.findById(comment.letter_id);
+  const removeIndex = letter.comments.indexOf(comment._id);
+  if (removeIndex !== -1) {
+    await letter.splice(removeIndex, 1);
+    letter.save();
+  }
+  console.log(letter);
+
+  await comment.remove();
+  res.json({ success: "Comment removed" });
+});
+
 // @route  POST /letter/addcomment
 // @desc   add a comment
 // @access Private
@@ -197,8 +226,8 @@ router.post("/addcomment", async (req, res) => {
     const letter = await LetterModel.findById(req.body.letter_id).populate(
       "comments"
     );
-    letter.comments.push(comment);
-    letter.save();
+    await letter.comments.push(comment);
+    await letter.save();
     res.json(letter);
   } catch (error) {
     console.log(error);
