@@ -205,7 +205,7 @@ router.delete("/comment/one/:id", async (req, res) => {
   const letter = await LetterModel.findById(comment.letter_id);
   const removeIndex = letter.comments.indexOf(comment._id);
   if (removeIndex !== -1) {
-    await letter.splice(removeIndex, 1);
+    await letter.comments.splice(removeIndex, 1);
     letter.save();
   }
   console.log(letter);
