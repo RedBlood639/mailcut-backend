@@ -192,7 +192,7 @@ router.post("/addcomment", async (req, res) => {
   try {
     const newData = new CommentModel(req.body);
     await newData.save();
-    const letters = await LetterModel.findById(req.params.id).populate(
+    const letters = await LetterModel.findById(req.body.letter_id).populate(
       "comments"
     );
     res.json(letters);
