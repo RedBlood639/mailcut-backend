@@ -18,30 +18,11 @@ const getPath = require("../../utils/getPath");
 sendGridMail.setApiKey(SENDGRID_API_KEY);
 
 const sendEmailVerify = async (email, body) => {
-  console.log(email, body);
   return {
-    personalizations: [
-      {
-        to: [
-          {
-            email: `${email}`,
-          },
-        ],
-        cc: [
-          {
-            email: `${email}`,
-          },
-        ],
-        bcc: [
-          {
-            email: `${email}`,
-          },
-        ],
-      },
-    ],
+    to: "h.j.dream0428@gmail.com",
     from: "verify@madreply.com",
-    subject: "Verify your email",
-    text: "Press here to verify your email. Thank you.",
+    subject: "Do not reply.",
+    text: "Follow the link.",
     html: body,
   };
 
@@ -132,7 +113,13 @@ router.post("/register", async (req, res) => {
       // const emailsent =
       try {
         const body = `Press <a href=http://madreply.com/verify/${uniqueString}> here </a> to verify your email. Thank you.`;
-        await sendGridMail.send(sendEmailVerify(newUser.email, body));
+        await sendGridMail.send({
+          to: "h.j.dream0428@gmail.com",
+          from: "verify@madreply.com",
+          subject: "Do not reply.",
+          text: "Follow the link.",
+          html: body,
+        });
         return res.json({
           success: "Please check your mailbox. Verify your email.",
         });
