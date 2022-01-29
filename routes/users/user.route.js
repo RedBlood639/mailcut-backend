@@ -118,7 +118,8 @@ router.post("/register", async (req, res) => {
           success: "Please check your mailbox. Verify your email.",
         });
       } catch (error) {
-        return res.status(500).send("Email Send Error!");
+        console.log(error);
+        return res.status(500).json({ error: "Email Send Error!" });
       }
       // if (emailsent) {
       //   await newUser.save();
