@@ -18,6 +18,7 @@ const getPath = require("../../utils/getPath");
 sendGridMail.setApiKey(SENDGRID_API_KEY);
 
 const sendEmailVerify = async (email, body) => {
+  console.log(email, body);
   return {
     to: [email],
     from: "verify@madreply.com",
