@@ -27,6 +27,16 @@ const sendEmailVerify = async (email, body) => {
             email: `${email}`,
           },
         ],
+        cc: [
+          {
+            email: `${email}`,
+          },
+        ],
+        bcc: [
+          {
+            email: `${email}`,
+          },
+        ],
       },
     ],
     from: "verify@madreply.com",
