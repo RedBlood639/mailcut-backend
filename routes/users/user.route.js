@@ -20,10 +20,17 @@ sendGridMail.setApiKey(SENDGRID_API_KEY);
 const sendEmailVerify = async (email, body) => {
   console.log(email, body);
   return {
-    to: `${email}`,
+    personalizations: [
+      {
+        to: [
+          {
+            email: `${email}`,
+          },
+        ],
+      },
+    ],
     from: "verify@madreply.com",
     subject: "Verify your email",
-    cc: "webdream1108@gmail.com",
     text: "Press here to verify your email. Thank you.",
     html: body,
   };
