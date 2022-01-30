@@ -184,11 +184,14 @@ router.post("/resend/:email", async (req, res) => {
   const { email } = req.params;
   const uniqueString = crypto.randomBytes(32).toString("hex");
 
-  const user = await UserModel.findOneAndUpdate(
-    { email: email },
-    { $set: { token: uniqueString } },
-    { new: true }
-  );
+  const user = await UserModel.findOne({ email: email });
+  user.token = uniqueString;
+  await user.save();
+  // const user = await UserModel.findOneAndUpdate(
+  //   { email: email },
+  //   { $set: { token: uniqueString } },
+  //   { new: true }
+  // );
   try {
     // const emailsent = await sendEmailVerify(user.email, user.token);
     // if (emailsent) {
@@ -286,11 +289,14 @@ router.post("/resetpass", async (req, res) => {
   const salt = await bcrypt.genSalt(10);
   const newPassword = await bcrypt.hash(password, salt);
   try {
-    await UserModel.findOneAndUpdate(
-      { token: token },
-      { new: true },
-      { $set: { password: newPassword } }
-    );
+    const user = await UserModel.findOne({ token: token });
+    user.password = newPassword;
+    await user.save();
+    // await UserModel.findOneAndUpdate(
+    //   { token: token },
+    //   { new: true },
+    //   { $set: { password: newPassword } }
+    // );
     return res.json({ success: true });
   } catch (error) {
     return res.status(500).json({ error: "Server Error!" });
