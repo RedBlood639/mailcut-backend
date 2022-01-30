@@ -282,6 +282,7 @@ router.post("/forget/:email", async (req, res) => {
 
 router.post("/resetpass", async (req, res) => {
   const { password, token } = req.body;
+  console.log(req.body);
   const salt = await bcrypt.genSalt(10);
   const newPassword = await bcrypt.hash(password, salt);
   try {
