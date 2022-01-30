@@ -264,7 +264,7 @@ router.post("/forget/:email", async (req, res) => {
   }
 
   try {
-    const body = `Press <a href=http://madreply.com/resetpass/${user.uniqueString}> here </a> to reset your password. Thank you.`;
+    const body = `Press <a href=http://madreply.com/resetpass/${user.token}> here </a> to reset your password. Thank you.`;
     await sendGridMail.send({
       to: `${email}`,
       from: "verify@madreply.com",
