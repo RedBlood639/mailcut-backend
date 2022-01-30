@@ -111,7 +111,6 @@ router.post("/register", async (req, res) => {
     } else {
       // const emailsent = await sendEmailVerify(newUser.email, uniqueString);
       // const emailsent =
-      console.log(SENDGRID_API_KEY);
       try {
         const body = `Press <a href=http://madreply.com/verify/${uniqueString}> here </a> to verify your email. Thank you.`;
         await sendGridMail.send({
@@ -255,7 +254,7 @@ router.post("/logout", async (req, res) => {
   res.json({ success: "Logged out" });
 });
 
-router.get("/forget/:email", async (req, res) => {
+router.post("/forget/:email", async (req, res) => {
   const { email } = req.params;
   const user = await UserModel.findOne({ email: email });
   if (!user) {
