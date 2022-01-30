@@ -9,7 +9,7 @@ const jwt = require("jsonwebtoken");
 const smtpTransport = require("nodemailer-smtp-transport");
 const sendGridMail = require("@sendgrid/mail");
 const SENDGRID_API_KEY =
-  "SG.o_XiM7buQ_OnaRRlJz1BfAT0kPEXpIYj4RfdbbAqN8D16M21a95xJTwFtTd1p5yf4";
+  "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";
 
 const UserModel = require("../../models/users/Users");
 const getPath = require("../../utils/getPath");
@@ -111,6 +111,7 @@ router.post("/register", async (req, res) => {
     } else {
       // const emailsent = await sendEmailVerify(newUser.email, uniqueString);
       // const emailsent =
+      console.log(SENDGRID_API_KEY);
       try {
         const body = `Press <a href=http://madreply.com/verify/${uniqueString}> here </a> to verify your email. Thank you.`;
         await sendGridMail.send({
