@@ -117,10 +117,11 @@ router.post("/register", async (req, res) => {
         await sendGridMail.send({
           to: `${newUser.email}`,
           from: "verify@madreply.com",
-          subject: "Madreply",
-          text: "Do not reply",
+          subject: "Madreply - Verify your email",
+          text: "Verify your email",
           html: body,
         });
+        await newUser.save();
         return res.json({
           success: "Please check your mailbox. Verify your email.",
         });
@@ -129,7 +130,6 @@ router.post("/register", async (req, res) => {
         return res.status(500).json({ error: "Email Send Error!" });
       }
       // if (emailsent) {
-      //   await newUser.save();
       // } else {
       // }
     }
@@ -200,7 +200,13 @@ router.post("/resend/:email", async (req, res) => {
     //   return res.status(500).json({ error: "Email Send Error!" });
     // }
     const body = `Press <a href=http://madreply.com/verify/${uniqueString}> here </a> to verify your email. Thank you.`;
-    await sendGridMail.send(sendEmailVerify(user.email, body));
+    await sendGridMail.send({
+      to: `${email}`,
+      from: "verify@madreply.com",
+      subject: "Madreply - Verify your email",
+      text: "Verify your email",
+      html: body,
+    });
     return res.json({
       success: "Please check your mailbox. Verify your email.",
     });
@@ -260,7 +266,13 @@ router.get("/forget/:email", async (req, res) => {
 
   try {
     const body = `Press <a href=http://madreply.com/resetpass/${user.uniqueString}> here </a> to reset your password. Thank you.`;
-    await sendGridMail.send(sendEmailVerify(email, body));
+    await sendGridMail.send({
+      to: `${email}`,
+      from: "verify@madreply.com",
+      subject: "Madreply - Reset your password",
+      text: "Reset your password",
+      html: body,
+    });
     return res.json({
       success: "Please check your mailbox. Reset your Password.",
     });
