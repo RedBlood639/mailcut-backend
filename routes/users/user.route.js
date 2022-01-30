@@ -186,8 +186,8 @@ router.post("/resend/:email", async (req, res) => {
 
   const user = await UserModel.findOneAndUpdate(
     { email: email },
-    { new: true },
-    { token: uniqueString }
+    { $set: { token: uniqueString } },
+    { new: true }
   );
   try {
     // const emailsent = await sendEmailVerify(user.email, user.token);
@@ -289,7 +289,7 @@ router.post("/resetpass", async (req, res) => {
     await UserModel.findOneAndUpdate(
       { token: token },
       { new: true },
-      { password: newPassword }
+      { $set: { password: newPassword } }
     );
     return res.json({ success: true });
   } catch (error) {
