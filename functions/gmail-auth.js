@@ -4,12 +4,12 @@ const path = require("path");
 const credentials = require("../config/credentials.json");
 const getPath = require("../utils/getPath");
 
-const SCOPES = [
-  "https://www.googleapis.com/auth/gmail.readonly",
-  "https://www.googleapis.com/auth/gmail.modify",
-  "https://www.googleapis.com/auth/gmail.compose",
-  "https://www.googleapis.com/auth/gmail.send",
-];
+// const SCOPES = [
+//   "https://www.googleapis.com/auth/gmail.readonly",
+//   "https://www.googleapis.com/auth/gmail.modify",
+//   "https://www.googleapis.com/auth/gmail.compose",
+//   "https://www.googleapis.com/auth/gmail.send",
+// ];
 // const TOKEN_PATH = path.join(__dirname, "../token.json");
 
 exports.authorize = async (email) => {
@@ -31,7 +31,7 @@ exports.getNewToken = async () => {
   return oAuth2Client.generateAuthUrl({
     access_type: "offline",
     prompt: "consent",
-    scope: SCOPES,
+    // scope: SCOPES,
   });
 };
 
