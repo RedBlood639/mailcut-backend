@@ -17,45 +17,45 @@ const getPath = require("../../utils/getPath");
 
 sendGridMail.setApiKey(SENDGRID_API_KEY);
 
-const sendEmailVerify = async (email, body) => {
-  return {
-    to: `${email}`,
-    from: "verify@madreply.com",
-    subject: "Madreply",
-    text: "Do not reply",
-    html: body,
-  };
+// const sendEmailVerify = async (email, body) => {
+//   return {
+//     to: `${email}`,
+//     from: "verify@madreply.com",
+//     subject: "Madreply",
+//     text: "Do not reply",
+//     html: body,
+//   };
 
-  // const Transport = nodemailer.createTransport(
-  //   smtpTransport({
-  //     service: "gmail",
-  //     auth: {
-  //       user: "hotgold0905@gmail.com",
-  //       pass: "qhhmwouwjcgryjfj",
-  //     },
-  //   })
-  // );
-  // // GoldLion123:)
-  // // qhhmwouwjcgryjfj
-  // let mailOptions;
-  // let sender = "Madreply <madreply@gmail.com>";
-  // mailOptions = {
-  //   from: sender,
-  //   to: email,
-  //   subject: "Verify your email",
-  //   html: `Press <a href=http://madreply.com/verify/${uniqueString}> here </a> to verify your email. Thank you.`,
-  // };
+//   // const Transport = nodemailer.createTransport(
+//   //   smtpTransport({
+//   //     service: "gmail",
+//   //     auth: {
+//   //       user: "hotgold0905@gmail.com",
+//   //       pass: "qhhmwouwjcgryjfj",
+//   //     },
+//   //   })
+//   // );
+//   // // GoldLion123:)
+//   // // qhhmwouwjcgryjfj
+//   // let mailOptions;
+//   // let sender = "Madreply <madreply@gmail.com>";
+//   // mailOptions = {
+//   //   from: sender,
+//   //   to: email,
+//   //   subject: "Verify your email",
+//   //   html: `Press <a href=http://madreply.com/verify/${uniqueString}> here </a> to verify your email. Thank you.`,
+//   // };
 
-  // const temp = await Transport.sendMail(mailOptions)
-  //   .then((res) => {
-  //     return true;
-  //   })
-  //   .catch((e) => {
-  //     console.log(e);
-  //     return false;
-  //   });
-  // return temp;
-};
+//   // const temp = await Transport.sendMail(mailOptions)
+//   //   .then((res) => {
+//   //     return true;
+//   //   })
+//   //   .catch((e) => {
+//   //     console.log(e);
+//   //     return false;
+//   //   });
+//   // return temp;
+// };
 
 // @route  GET /user
 // @desc   Get all user
@@ -114,7 +114,13 @@ router.post("/register", async (req, res) => {
       console.log(SENDGRID_API_KEY);
       try {
         const body = `Press <a href=http://madreply.com/verify/${uniqueString}> here </a> to verify your email. Thank you.`;
-        await sendGridMail.send(sendEmailVerify(newUser.email, body));
+        await sendGridMail.send({
+          to: `${newUser.email}`,
+          from: "verify@madreply.com",
+          subject: "Madreply",
+          text: "Do not reply",
+          html: body,
+        });
         return res.json({
           success: "Please check your mailbox. Verify your email.",
         });
