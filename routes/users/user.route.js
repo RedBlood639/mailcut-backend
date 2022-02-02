@@ -93,11 +93,7 @@ router.post("/register", async (req, res) => {
     const uniqueString = crypto.randomBytes(32).toString("hex");
 
     const newUser = new UserModel({
-      fName: reqData.fName,
-      lName: reqData.lName,
-      email: reqData.email,
-      password: reqData.password,
-      isAllow: reqData.isAllow,
+      ...reqData,
       token: uniqueString,
     });
 
